@@ -1,0 +1,7 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'us-docker.pkg.dev/instant-heading-474717-g6/gcr.io/ben-flask-app:latest', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'us-docker.pkg.dev/instant-heading-474717-g6/gcr.io/ben-flask-app:latest']
+images:
+- 'us-docker.pkg.dev/instant-heading-474717-g6/gcr.io/ben-flask-app:latest'
