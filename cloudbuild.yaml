@@ -1,17 +1,25 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'us-docker.pkg.dev/instant-heading-474717-g6/us/gcr.io/ben-flask-app:latest', '.']
+  args:
+    - 'build'
+    - '-t'
+    - 'us-docker.pkg.dev/instant-heading-474717-g6/us/gcr.io/ben-flask-app:latest'
+    - '.'
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'us-docker.pkg.dev/instant-heading-474717-g6/us/gcr.io/ben-flask-app:latest']
+  args:
+    - 'push'
+    - 'us-docker.pkg.dev/instant-heading-474717-g6/us/gcr.io/ben-flask-app:latest'
 
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: [
-    'compute', 'instances', 'update-container', 'ben-flask-instance',
-    '--zone=us-central1-a',
-    '--container-image=us-docker.pkg.dev/instant-heading-474717-g6/us/gcr.io/ben-flask-app:latest',
-    '--container-restart-policy=always'
-  ]
+  args:
+    - 'compute'
+    - 'instances'
+    - 'update-container'
+    - 'ben-flask-vm'
+    - '--zone=us-central1-a'
+    - '--container-image=us-docker.pkg.dev/instant-heading-474717-g6/us/gcr.io/ben-flask-app:latest'
+    - '--container-restart-policy=always'
 
 images:
 - 'us-docker.pkg.dev/instant-heading-474717-g6/us/gcr.io/ben-flask-app:latest'
