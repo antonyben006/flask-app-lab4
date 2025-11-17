@@ -1,20 +1,20 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'us-docker.pkg.dev/instant-heading-474717-g6/gcr.io/ben-flask-app:latest', '.']
+  args: ['build', '-t', 'northamerica-northeast1-docker.pkg.dev/assignment-2-478521/ben-flask-repo/ben-flask-app:latest', '.']
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'us-docker.pkg.dev/instant-heading-474717-g6/gcr.io/ben-flask-app:latest']
+  args: ['push', 'northamerica-northeast1-docker.pkg.dev/assignment-2-478521/ben-flask-repo/ben-flask-app:latest']
 
 - name: 'gcr.io/cloud-builders/gcloud'
   args: [
     'compute', 'instances', 'update-container', 'ben-flask-vm',
-    '--zone=us-central1-a',
-    '--container-image=us-docker.pkg.dev/instant-heading-474717-g6/gcr.io/ben-flask-app:latest',
+    '--zone=northamerica-northeast1-a',
+    '--container-image=northamerica-northeast1-docker.pkg.dev/assignment-2-478521/ben-flask-repo/ben-flask-app:latest',
     '--container-restart-policy=always'
   ]
 
 images:
-- 'us-docker.pkg.dev/instant-heading-474717-g6/gcr.io/ben-flask-app:latest'
+- 'northamerica-northeast1-docker.pkg.dev/assignment-2-478521/ben-flask-repo/ben-flask-app:latest'
 
 options:
   logging: CLOUD_LOGGING_ONLY
