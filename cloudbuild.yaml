@@ -5,6 +5,26 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'northamerica-northeast1-docker.pkg.dev/assignment-2-478521/ben-flask-repo/ben-flask-app:latest']
 
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      # Fetch SSH private key from Secret Manager
+      gcloud secrets versions access latest --secret=cloudbuild-ssh-key > /root/.ssh/id_rsa
+      chmod 600 /root/.ssh/id_rsa
+
+      # Get VM External IP
+      VM_IP=$(gcloud compute instances describe ben-flask-vm --zone northamerica-northeast1-a --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
+
+      # SSH into VM and update container
+      ssh -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no antonybenaws@$VM_IP "
+        sudo docker pull northamerica-northeast1-docker.pkg.dev/assignment-2-478521/ben-flask-repo/ben-flask-app:latest &&
+        sudo docker stop flask-app || true &&
+        sudo docker rm flask-app || true &&
+        sudo docker run -d --name flask-app -p 5000:5000 --restart always northamerica-northeast1-docker.pkg.dev/assignment-2-478521/ben-flask-repo/ben-flask-app:latest
+      "
+
 images:
 - 'northamerica-northeast1-docker.pkg.dev/assignment-2-478521/ben-flask-repo/ben-flask-app:latest'
 
