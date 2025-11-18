@@ -14,10 +14,10 @@ steps:
       gcloud secrets versions access latest --secret=cloudbuild-ssh-key > /root/.ssh/id_rsa
       chmod 600 /root/.ssh/id_rsa
 
-      # Get VM External IP
+      # Get VM external IP using gcloud
       VM_IP=$(gcloud compute instances describe ben-flask-vm --zone northamerica-northeast1-a --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
 
-      # SSH into VM and update container
+      # SSH and update the running container
       ssh -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no antonybenaws@$VM_IP "
         sudo docker pull northamerica-northeast1-docker.pkg.dev/assignment-2-478521/ben-flask-repo/ben-flask-app:latest &&
         sudo docker stop flask-app || true &&
